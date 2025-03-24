@@ -16,9 +16,28 @@ messages = [
     "jeu"
 ]
 
+# Indices sous forme de calculs pour chaque lettre grecque
+indices = {
+    'α': '3*2', 'β': '2*4', 'γ': '5*4', 'δ': '9*2', 'ε': '13*2', 'ζ': '1*1',
+    'η': '7*2', 'θ': '3*4', 'ι': '2*1', 'κ': '5*3', 'λ': '30/3', 'μ': '25/5',
+    'ν': '120/40', 'ξ': '16/4', 'ο': '21/3', 'π': '38/2', 'ρ': '130/10', 'σ': '27/9',
+    'τ': '4*4', 'υ': '34/2', 'φ': '100/4', 'χ': '3*7', 'ψ': '11*2', 'ω': '69/3'
+}
+
+
 def convertir_en_grec(message):
     """Fonction pour convertir un message en lettres grecques."""
     return ''.join([greek_alphabet.get(char, char) for char in message.lower()])
+
+
+def afficher_indice(message_grec):
+    """Afficher un indice basé sur les lettres grecques du message."""
+    indices_message = []
+    for char in message_grec:
+        if char in indices:
+            indices_message.append(f"{char} = {indices[char]}")
+    return "\n".join(indices_message)
+
 
 def jeu():
     """Fonction principale du jeu."""
@@ -28,22 +47,23 @@ def jeu():
     print("Voici le message à déchiffrer en lettres grecques:")
     print(message_grec)
 
+    # Afficher les indices pour aider à déchiffrer
+    print("\nIndices pour les lettres grecques :")
+    print(afficher_indice(message_grec))
+
     # Lancement de la boucle de jeu
     essais = 0
     while True:
-        reponse = input("Quel est le message original? ").lower().strip()
+        reponse = input("\nQuel est le message original? ").lower().strip()
         essais += 1
 
         if reponse == message_original:
-            print(f"Bravo! Vous à présent accéder au niveau superieur.")
+            print(f"Bravo! Vous avez trouvé le message après {essais} essai(s).")
             break
         else:
             print("Ce n'est pas le bon message, essayez encore!")
-            # Changer le message si la réponse est incorrecte
-            message_original = random.choice(messages)
-            message_grec = convertir_en_grec(message_original)
-            print("Nouveau message à déchiffrer en grec:")
-            print(message_grec)
+
 
 # Lancer le jeu
 jeu()
+
