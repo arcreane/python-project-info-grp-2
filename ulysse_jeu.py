@@ -22,7 +22,7 @@ def generer_mines(taille):
     while len(mines) < nb_mines:
         x = random.randint(0, taille - 1)
         y = random.randint(0, taille - 1)
-        if (x, y) not in mines:
+        if (x, y) not in mines:      #verifie que le couple x,y n'est pas dans la liste mines avant de l'ajouter
             mines.append((x, y))
     return mines
 
