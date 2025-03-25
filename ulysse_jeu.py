@@ -15,3 +15,4 @@ BLEU = (0, 0, 255)
 fenetre = pygame.display.set_mode((LARGEUR, HAUTEUR))
 pygame.display.set_caption("Démineur de la Tour")
 
+
