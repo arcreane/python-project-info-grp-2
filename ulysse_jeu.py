@@ -25,4 +25,4 @@ def generer_mines(taille):
         if (x, y) not in mines:      #verifie que le couple x,y n'est pas dans la liste mines avant de l'ajouter
             mines.append((x, y))
     return mines
-
+def placer_indices(grille, mines, taille):
