@@ -9,11 +9,16 @@ greek_alphabet = {
 
 # Liste des messages à déchiffrer
 messages = [
-    "bonjour",
-    "salut",
-    "code",
-    "python",
-    "jeu"
+    "chat", "pomme", "arbre", "bleu", "maison", "livre", "fleur", "etoile", "ciel", "train",
+    "ballon", "soleil", "lune", "mer", "velo", "sucre", "four", "porte", "cle", "table",
+    "nuit", "fer", "pluie", "vent", "musique", "reve", "banc", "glace", "route", "bois",
+    "cle", "phare", "orage", "neige", "paix", "glace", "vent", "sac", "ballon", "camion",
+    "neige", "porte", "fleur", "ciel", "verre", "soupe", "coupe", "chien", "pomme", "crayon",
+    "maison", "chat", "style", "jumeau", "pont", "miroir", "papa", "poule", "carte", "sucre",
+    "gateau", "fleur", "chaise", "vent", "cle", "onde", "ciel", "bleu", "rouge", "jardin",
+    "rame", "ruisseau", "rue", "bois", "tapis", "jus", "miroir", "botte", "table", "tombe",
+    "soir", "minuit", "nuage", "sable", "monnaie", "lune", "meche", "moche", "rayon", "porte",
+    "livre", "ours", "fauteuil", "lever", "porter", "jeter", "pause", "reveil", "maree"
 ]
 
 # Indices sous forme de calculs pour chaque lettre grecque
@@ -66,4 +71,5 @@ def jeu():
 
 # Lancer le jeu
 jeu()
+
 
