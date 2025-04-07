@@ -32,3 +32,9 @@ def afficher_labyrinthe(position):
             else:
                 print("[ ]" if case != "piège" else "[ ]", end=" ")
         print()
+def perdre():
+    reponse = messagebox.askretrycancel("Défaite", "Oh non ! Tu es tombé dans un piège ! Recommencer ?")
+    if reponse:
+        jouer_labyrinthe(False)
+    else:
+        root.destroy()
