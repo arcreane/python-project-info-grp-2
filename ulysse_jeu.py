@@ -26,3 +26,20 @@ def generer_mines(taille):
             mines.append((x, y))
     return mines
 def placer_indices(grille, mines, taille):
+    directions = [(-1, -1), (-1, 0), (-1, 1),
+                  (0, -1),         (0, 1),
+                  (1, -1), (1, 0), (1, 1)]
+    for y in range(taille):
+        for x in range(taille):
+            if (x, y) in mines:
+                grille[y][x] = "X"
+            else:
+                compteur = 0
+                for dx, dy in directions:
+                    nx, ny = x + dx, y + dy
+                    if 0 <= nx < taille and 0 <= ny < taille and (nx, ny) in mines:
+                        compteur += 1
+                if compteur > 0:
+                    grille[y][x] = str(compteur)
+
+
