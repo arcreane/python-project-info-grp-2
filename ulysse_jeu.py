@@ -42,4 +42,28 @@ def placer_indices(grille, mines, taille):
                 if compteur > 0:
                     grille[y][x] = str(compteur)
 
+class TourDemineur:
+    def __init__(self, niveau=0):
+        self.niveau = niveau
+        self.taille = TAILLE_GRILLE + niveau
+        self.mines = generer_mines(self.taille)
+        self.grille = [["." for _ in range(self.taille)] for _ in range(self.taille)]
+        placer_indices(self.grille, self.mines, self.taille)
+        self.revelees = [[False for _ in range(self.taille)] for _ in range(self.taille)]
+        self.flags = [[False for _ in range(self.taille)] for _ in range(self.taille)]
+        self.game_over = False
+        self.victoire = False
 
+    def reveler_case(self, x, y):
+        if self.revelees[y][x] or self.flags[y][x]:
+            return
+        self.revelees[y][x] = True
+        if self.grille[y][x] == "X":
+            self.game_over = True
+        elif self.grille[y][x] == ".":
+            for dx, dy in [(-1, -1), (-1, 0), (-1, 1),
+                           (0, -1),         (0, 1),
+                           (1, -1), (1, 0), (1, 1)]:
+                nx, ny = x + dx, y + dy
+                if 0 <= nx < self.taille and 0 <= ny < self.taille:
+                    self.reveler_case(nx, ny)
