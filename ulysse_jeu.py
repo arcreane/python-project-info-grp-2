@@ -67,3 +67,18 @@ class TourDemineur:
                 nx, ny = x + dx, y + dy
                 if 0 <= nx < self.taille and 0 <= ny < self.taille:
                     self.reveler_case(nx, ny)
+ def toggle_flag(self, x, y):
+        if not self.revelees[y][x]:
+            self.flags[y][x] = not self.flags[y][x]
+
+    def afficher(self):
+        for y in range(self.taille):
+            for x in range(self.taille):
+                rect = pygame.Rect(x * TAILLE_CASE, y * TAILLE_CASE, TAILLE_CASE, TAILLE_CASE)
+
+                if not self.revelees[y][x]:
+                    pygame.draw.rect(fenetre, VIOLET_FONCE, rect)
+                    pygame.draw.rect(fenetre, NOIR, rect, 2)
+                else:
+                    pygame.draw.rect(fenetre, GRIS_CLAIR, rect)
+                    pygame.draw.rect(fenetre, NOIR, rect, 2)
