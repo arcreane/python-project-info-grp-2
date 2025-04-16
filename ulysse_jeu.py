@@ -105,3 +105,35 @@ niveau = 0
 jeu = TourDemineur(niveau)
 clock = pygame.time.Clock()
 running = True
+
+while running:
+    fenetre.fill(BLANC)
+    jeu.afficher()
+
+    bouton_rejouer = None
+    if jeu.game_over:
+        font = pygame.font.Font(None, 48)
+        texte = font.render("Perdu !", True, ROUGE)
+        fenetre.blit(texte, (LARGEUR // 2 - 60, HAUTEUR // 2 - 30))
+        bouton_rejouer = bouton_rejouer()
+
+    pygame.display.flip()
+
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+        if not jeu.game_over and event.type == pygame.MOUSEBUTTONDOWN:
+            x = event.pos[0] // TAILLE_CASE
+            y = event.pos[1] // TAILLE_CASE
+            if x < jeu.taille and y < jeu.taille:
+                if event.button == 1:
+                    jeu.reveler_case(x, y)
+                elif event.button == 3:
+                    jeu.toggle_flag(x, y)
+        elif jeu.game_over and event.type == pygame.MOUSEBUTTONDOWN:
+            if bouton_rejouer and bouton_rejouer.collidepoint(event.pos):
+                jeu = TourDemineur(niveau)
+
+    clock.tick(30)
+
+pygame.quit()
