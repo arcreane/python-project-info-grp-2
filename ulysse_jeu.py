@@ -82,3 +82,12 @@ class TourDemineur:
                 else:
                     pygame.draw.rect(fenetre, GRIS_CLAIR, rect)
                     pygame.draw.rect(fenetre, NOIR, rect, 2)
+if self.flags[y][x]:
+                    pygame.draw.circle(fenetre, JAUNE, rect.center, TAILLE_CASE // 4)
+                elif self.revelees[y][x] or (self.game_over and self.grille[y][x] == "X"):
+                    if self.grille[y][x] == "X":
+                        pygame.draw.circle(fenetre, ROUGE, rect.center, TAILLE_CASE // 4)
+                    elif self.grille[y][x] != ".":
+                        font = pygame.font.Font(None, 36)
+                        texte = font.render(self.grille[y][x], True, NOIR)
+                        fenetre.blit(texte, (x * TAILLE_CASE + 10, y * TAILLE_CASE + 5))
