@@ -100,3 +100,8 @@ def bouton_rejouer():
     texte = font.render("Rejouer", True, NOIR)
     fenetre.blit(texte, (LARGEUR // 2 - 40, HAUTEUR + 30))
     return bouton
+
+niveau = 0
+jeu = TourDemineur(niveau)
+clock = pygame.time.Clock()
+running = True
