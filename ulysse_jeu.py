@@ -1,30 +1,33 @@
-import random
 import pygame
+import random
+
 pygame.init()
 
-TAILLE_CASE = 60  
-TAILLE_GRILLE = 8  
-LARGEUR = HAUTEUR = TAILLE_CASE * TAILLE_GRILLE  
+TAILLE_CASE = 60
+TAILLE_GRILLE = 8
+LARGEUR = HAUTEUR = TAILLE_CASE * TAILLE_GRILLE
 
 BLANC = (255, 255, 255)
 NOIR = (0, 0, 0)
 ROUGE = (255, 0, 0)
 VERT = (0, 255, 0)
 GRIS_CLAIR = (200, 200, 200)
-BLEU = (0, 0, 255)
+JAUNE = (255, 255, 0)
+VIOLET_FONCE = (60, 0, 90)
 
-fenetre = pygame.display.set_mode((LARGEUR, HAUTEUR))
+fenetre = pygame.display.set_mode((LARGEUR, HAUTEUR + 80))
 pygame.display.set_caption("Démineur de la Tour")
 
 def generer_mines(taille):
     mines = []
-    nb_mines = (taille ** 2) // 5    # on a taille = 8, donc 8^2=64 et 64//5 = à 12, ya 12 mines en tout a chaque fois
+    nb_mines = (taille ** 2) // 5  # on a taille = 8, donc 8^2=64 et 64//5 = à 12, ya 12 mines en tout a chaque fois
     while len(mines) < nb_mines:
         x = random.randint(0, taille - 1)
         y = random.randint(0, taille - 1)
-        if (x, y) not in mines:      #verifie que le couple x,y n'est pas dans la liste mines avant de l'ajouter
+        if (x, y) not in mines: #verifie que le couple x,y n'est pas dans la liste mines avant de l'ajouter
             mines.append((x, y))
     return mines
+
 def placer_indices(grille, mines, taille):
     directions = [(-1, -1), (-1, 0), (-1, 1),
                   (0, -1),         (0, 1),
@@ -67,7 +70,8 @@ class TourDemineur:
                 nx, ny = x + dx, y + dy
                 if 0 <= nx < self.taille and 0 <= ny < self.taille:
                     self.reveler_case(nx, ny)
- def toggle_flag(self, x, y):
+
+    def toggle_flag(self, x, y):
         if not self.revelees[y][x]:
             self.flags[y][x] = not self.flags[y][x]
 
@@ -82,6 +86,7 @@ class TourDemineur:
                 else:
                     pygame.draw.rect(fenetre, GRIS_CLAIR, rect)
                     pygame.draw.rect(fenetre, NOIR, rect, 2)
+
                 if self.flags[y][x]:
                     pygame.draw.circle(fenetre, JAUNE, rect.center, TAILLE_CASE // 4)
                 elif self.revelees[y][x] or (self.game_over and self.grille[y][x] == "X"):
@@ -91,7 +96,7 @@ class TourDemineur:
                         font = pygame.font.Font(None, 36)
                         texte = font.render(self.grille[y][x], True, NOIR)
                         fenetre.blit(texte, (x * TAILLE_CASE + 10, y * TAILLE_CASE + 5))
-                        
+
 def bouton_rejouer():
     bouton = pygame.Rect(LARGEUR // 2 - 60, HAUTEUR + 20, 120, 40)
     pygame.draw.rect(fenetre, VERT, bouton)
@@ -137,3 +142,4 @@ while running:
     clock.tick(30)
 
 pygame.quit()
+
