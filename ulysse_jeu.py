@@ -91,3 +91,12 @@ if self.flags[y][x]:
                         font = pygame.font.Font(None, 36)
                         texte = font.render(self.grille[y][x], True, NOIR)
                         fenetre.blit(texte, (x * TAILLE_CASE + 10, y * TAILLE_CASE + 5))
+                        
+def bouton_rejouer():
+    bouton = pygame.Rect(LARGEUR // 2 - 60, HAUTEUR + 20, 120, 40)
+    pygame.draw.rect(fenetre, VERT, bouton)
+    pygame.draw.rect(fenetre, NOIR, bouton, 2)
+    font = pygame.font.Font(None, 32)
+    texte = font.render("Rejouer", True, NOIR)
+    fenetre.blit(texte, (LARGEUR // 2 - 40, HAUTEUR + 30))
+    return bouton
