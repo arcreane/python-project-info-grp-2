@@ -82,7 +82,7 @@ class TourDemineur:
                 else:
                     pygame.draw.rect(fenetre, GRIS_CLAIR, rect)
                     pygame.draw.rect(fenetre, NOIR, rect, 2)
-if self.flags[y][x]:
+                if self.flags[y][x]:
                     pygame.draw.circle(fenetre, JAUNE, rect.center, TAILLE_CASE // 4)
                 elif self.revelees[y][x] or (self.game_over and self.grille[y][x] == "X"):
                     if self.grille[y][x] == "X":
