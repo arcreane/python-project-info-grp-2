@@ -20,7 +20,7 @@ pygame.display.set_caption("Démineur de la Tour")
 
 def generer_mines(taille):
     mines = []
-    nb_mines = (taille ** 2) // 5  # on a taille = 8, donc 8^2=64 et 64//5 = à 12, ya 12 mines en tout a chaque fois
+    nb_mines = (taille ** 2) // 5 # on a taille = 8, donc 8^2=64 et 64//5 = à 12, ya 12 mines en tout a chaque fois
     while len(mines) < nb_mines:
         x = random.randint(0, taille - 1)
         y = random.randint(0, taille - 1)
@@ -97,7 +97,7 @@ class TourDemineur:
                         texte = font.render(self.grille[y][x], True, NOIR)
                         fenetre.blit(texte, (x * TAILLE_CASE + 10, y * TAILLE_CASE + 5))
 
-def bouton_rejouer():
+def dessiner_bouton_rejouer():
     bouton = pygame.Rect(LARGEUR // 2 - 60, HAUTEUR + 20, 120, 40)
     pygame.draw.rect(fenetre, VERT, bouton)
     pygame.draw.rect(fenetre, NOIR, bouton, 2)
@@ -115,12 +115,12 @@ while running:
     fenetre.fill(BLANC)
     jeu.afficher()
 
-    bouton_rejouer = None
+    rect_bouton_rejouer = None
     if jeu.game_over:
         font = pygame.font.Font(None, 48)
         texte = font.render("Perdu !", True, ROUGE)
         fenetre.blit(texte, (LARGEUR // 2 - 60, HAUTEUR // 2 - 30))
-        bouton_rejouer = bouton_rejouer()
+        rect_bouton_rejouer = dessiner_bouton_rejouer()
 
     pygame.display.flip()
 
@@ -136,7 +136,7 @@ while running:
                 elif event.button == 3:
                     jeu.toggle_flag(x, y)
         elif jeu.game_over and event.type == pygame.MOUSEBUTTONDOWN:
-            if bouton_rejouer and bouton_rejouer.collidepoint(event.pos):
+            if rect_bouton_rejouer and rect_bouton_rejouer.collidepoint(event.pos):
                 jeu = TourDemineur(niveau)
 
     clock.tick(30)
