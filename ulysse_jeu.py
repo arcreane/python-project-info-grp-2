@@ -1,5 +1,6 @@
 import pygame
 import random
+import time
 
 pygame.init()
 
@@ -23,6 +24,9 @@ dalle_image = pygame.transform.scale(dalle_image, (TAILLE_CASE, TAILLE_CASE))
 
 tnt_image = pygame.image.load("images/tnt.jpg")
 tnt_image = pygame.transform.scale(tnt_image, (TAILLE_CASE, TAILLE_CASE))
+
+tntsweeper_image = pygame.image.load("images/tntsweeper.png")
+tntsweeper_image = pygame.transform.scale(tntsweeper_image, (LARGEUR, HAUTEUR + 80))
 
 def generer_mines(taille):
     mines = []
@@ -87,7 +91,6 @@ class TourDemineur:
                 rect = pygame.Rect(x * TAILLE_CASE, y * TAILLE_CASE, TAILLE_CASE, TAILLE_CASE)
 
                 fenetre.blit(dalle_image, rect.topleft)
-
                 pygame.draw.rect(fenetre, NOIR, rect, 2)
 
                 if self.flags[y][x]:
@@ -109,40 +112,89 @@ def dessiner_bouton_rejouer():
     fenetre.blit(texte, (LARGEUR // 2 - 40, HAUTEUR + 30))
     return bouton
 
-niveau = 0
-jeu = TourDemineur(niveau)
-clock = pygame.time.Clock()
-running = True
+def ecran_accueil():
+    fenetre.fill(VIOLET_FONCE)
+    font_titre = pygame.font.Font(None, 40)
+    font_texte = pygame.font.Font(None, 29)
 
-while running:
-    fenetre.fill(NOIR)
-    jeu.afficher()
+    titre = font_titre.render("Bienvenue dans le Démineur de la Tour!", True, BLANC)
+    fenetre.blit(titre, (LARGEUR // 2 - titre.get_width() // 2, 50))
 
-    rect_bouton_rejouer = None
-    if jeu.game_over:
-        font = pygame.font.Font(None, 48)
-        texte = font.render("Perdu !", True, ROUGE)
-        fenetre.blit(texte, (LARGEUR // 2 - 60, HAUTEUR // 2 - 30))
-        rect_bouton_rejouer = dessiner_bouton_rejouer()
+    instructions = [
+        "But du jeu : révéler toutes les cases sans mines.",
+        "Clique gauche pour révéler une case.",
+        "Clique droit pour poser un drapeau.",
+        "Si vous cliquez sur une mine, c'est perdu !"
+    ]
+
+    for i, ligne in enumerate(instructions):
+        texte = font_texte.render(ligne, True, BLANC)
+        fenetre.blit(texte, (50, 150 + i * 40))
+
+    bouton = pygame.Rect(LARGEUR // 2 - 100, HAUTEUR - 100, 200, 50)
+    pygame.draw.rect(fenetre, VERT, bouton)
+    pygame.draw.rect(fenetre, NOIR, bouton, 3)
+    texte_bouton = font_texte.render("Commencer", True, NOIR)
+    fenetre.blit(texte_bouton, (LARGEUR // 2 - texte_bouton.get_width() // 2, HAUTEUR - 90))
 
     pygame.display.flip()
+    return bouton
+
+def afficher_intro():
+    fenetre.blit(tntsweeper_image, (0, 0))
+    pygame.display.flip()
+    pygame.time.delay(2000)  #  2 secondes
+
+
+niveau = 0
+jeu = None
+clock = pygame.time.Clock()
+running = True
+etat = "intro"  # "intro", "accueil", "jeu"
+
+while running:
+    if etat == "intro":
+        afficher_intro()
+        etat = "accueil"
+
+    if etat == "accueil":
+        bouton_commencer = ecran_accueil()
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-        if not jeu.game_over and event.type == pygame.MOUSEBUTTONDOWN:
-            x = event.pos[0] // TAILLE_CASE
-            y = event.pos[1] // TAILLE_CASE
-            if x < jeu.taille and y < jeu.taille:
-                if event.button == 1:
-                    jeu.reveler_case(x, y)
-                elif event.button == 3:
-                    jeu.toggle_flag(x, y)
-        elif jeu.game_over and event.type == pygame.MOUSEBUTTONDOWN:
-            if rect_bouton_rejouer and rect_bouton_rejouer.collidepoint(event.pos):
-                jeu = TourDemineur(niveau)
 
+        if etat == "accueil":
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if bouton_commencer.collidepoint(event.pos):
+                    jeu = TourDemineur(niveau)
+                    etat = "jeu"
+
+        elif etat == "jeu":
+            if not jeu.game_over and event.type == pygame.MOUSEBUTTONDOWN:
+                x = event.pos[0] // TAILLE_CASE
+                y = event.pos[1] // TAILLE_CASE
+                if x < jeu.taille and y < jeu.taille:
+                    if event.button == 1:
+                        jeu.reveler_case(x, y)
+                    elif event.button == 3:
+                        jeu.toggle_flag(x, y)
+            elif jeu.game_over and event.type == pygame.MOUSEBUTTONDOWN:
+                if rect_bouton_rejouer and rect_bouton_rejouer.collidepoint(event.pos):
+                    jeu = TourDemineur(niveau)
+
+    if etat == "jeu":
+        fenetre.fill(NOIR)
+        jeu.afficher()
+
+        rect_bouton_rejouer = None
+        if jeu.game_over:
+            font = pygame.font.Font(None, 48)
+            texte = font.render("Perdu !", True, ROUGE)
+            fenetre.blit(texte, (LARGEUR // 2 - 60, HAUTEUR // 2 - 30))
+            rect_bouton_rejouer = dessiner_bouton_rejouer()
+
+    pygame.display.flip()
     clock.tick(30)
 
-pygame.quit()
 pygame.quit()
