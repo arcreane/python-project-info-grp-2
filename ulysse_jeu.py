@@ -18,13 +18,19 @@ VIOLET_FONCE = (60, 0, 90)
 fenetre = pygame.display.set_mode((LARGEUR, HAUTEUR + 80))
 pygame.display.set_caption("Démineur de la Tour")
 
+dalle_image = pygame.image.load("images/dalle.jpg")
+dalle_image = pygame.transform.scale(dalle_image, (TAILLE_CASE, TAILLE_CASE))
+
+tnt_image = pygame.image.load("images/tnt.jpg")
+tnt_image = pygame.transform.scale(tnt_image, (TAILLE_CASE, TAILLE_CASE))
+
 def generer_mines(taille):
     mines = []
-    nb_mines = (taille ** 2) // 5 # on a taille = 8, donc 8^2=64 et 64//5 = à 12, ya 12 mines en tout a chaque fois
+    nb_mines = (taille ** 2) // 5
     while len(mines) < nb_mines:
         x = random.randint(0, taille - 1)
         y = random.randint(0, taille - 1)
-        if (x, y) not in mines: #verifie que le couple x,y n'est pas dans la liste mines avant de l'ajouter
+        if (x, y) not in mines:
             mines.append((x, y))
     return mines
 
@@ -80,21 +86,18 @@ class TourDemineur:
             for x in range(self.taille):
                 rect = pygame.Rect(x * TAILLE_CASE, y * TAILLE_CASE, TAILLE_CASE, TAILLE_CASE)
 
-                if not self.revelees[y][x]:
-                    pygame.draw.rect(fenetre, VIOLET_FONCE, rect)
-                    pygame.draw.rect(fenetre, NOIR, rect, 2)
-                else:
-                    pygame.draw.rect(fenetre, GRIS_CLAIR, rect)
-                    pygame.draw.rect(fenetre, NOIR, rect, 2)
+                fenetre.blit(dalle_image, rect.topleft)
+
+                pygame.draw.rect(fenetre, NOIR, rect, 2)
 
                 if self.flags[y][x]:
                     pygame.draw.circle(fenetre, JAUNE, rect.center, TAILLE_CASE // 4)
                 elif self.revelees[y][x] or (self.game_over and self.grille[y][x] == "X"):
                     if self.grille[y][x] == "X":
-                        pygame.draw.circle(fenetre, ROUGE, rect.center, TAILLE_CASE // 4)
+                        fenetre.blit(tnt_image, rect.topleft)
                     elif self.grille[y][x] != ".":
                         font = pygame.font.Font(None, 36)
-                        texte = font.render(self.grille[y][x], True, NOIR)
+                        texte = font.render(self.grille[y][x], True, BLANC)
                         fenetre.blit(texte, (x * TAILLE_CASE + 10, y * TAILLE_CASE + 5))
 
 def dessiner_bouton_rejouer():
@@ -112,7 +115,7 @@ clock = pygame.time.Clock()
 running = True
 
 while running:
-    fenetre.fill(BLANC)
+    fenetre.fill(NOIR)
     jeu.afficher()
 
     rect_bouton_rejouer = None
@@ -142,4 +145,4 @@ while running:
     clock.tick(30)
 
 pygame.quit()
-
+pygame.quit()
