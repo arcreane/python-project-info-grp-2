@@ -38,3 +38,10 @@ def perdre():
         jouer_labyrinthe(False)
     else:
         root.destroy()
+def gagner(temps):
+    global records, labyrinthe
+    records.append(temps)
+    records = sorted(records)[:TOP_RECORDS]
+    messagebox.showinfo("Victoire", f"Félicitations ! Tu as trouvé la sortie en {temps:.2f} secondes !\n\nTop 10 des records :\n" + "\n".join(f"{i+1}. {t:.2f}s" for i, t in enumerate(records)))
+    labyrinthe = generer_labyrinthe()
+    root.destroy()
