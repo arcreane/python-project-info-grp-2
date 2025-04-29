@@ -19,7 +19,7 @@ VIOLET_FONCE = (60, 0, 90)
 fenetre = pygame.display.set_mode((LARGEUR, HAUTEUR + 80))
 pygame.display.set_caption("Démineur de la Tour")
 
-dalle_image = pygame.image.load("images/dalle.jpg")
+dalle_image = pygame.image.load("images/dalles.jpg")
 dalle_image = pygame.transform.scale(dalle_image, (TAILLE_CASE, TAILLE_CASE))
 
 tnt_image = pygame.image.load("images/tnt.jpg")
@@ -90,10 +90,11 @@ class TourDemineur:
             for x in range(self.taille):
                 rect = pygame.Rect(x * TAILLE_CASE, y * TAILLE_CASE, TAILLE_CASE, TAILLE_CASE)
 
-                fenetre.blit(dalle_image, rect.topleft)
+
                 pygame.draw.rect(fenetre, NOIR, rect, 2)
 
                 if self.flags[y][x]:
+                    fenetre.blit(dalle_image, rect.topleft)
                     pygame.draw.circle(fenetre, JAUNE, rect.center, TAILLE_CASE // 4)
                 elif self.revelees[y][x] or (self.game_over and self.grille[y][x] == "X"):
                     if self.grille[y][x] == "X":
@@ -102,6 +103,8 @@ class TourDemineur:
                         font = pygame.font.Font(None, 36)
                         texte = font.render(self.grille[y][x], True, BLANC)
                         fenetre.blit(texte, (x * TAILLE_CASE + 10, y * TAILLE_CASE + 5))
+                else:
+                    fenetre.blit(dalle_image, rect.topleft)
 
 def dessiner_bouton_rejouer():
     bouton = pygame.Rect(LARGEUR // 2 - 60, HAUTEUR + 20, 120, 40)
