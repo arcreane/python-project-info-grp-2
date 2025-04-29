@@ -8,13 +8,13 @@ TOP_RECORDS = 10
 records = []
 
 def generer_labyrinthe():
-    # Génère un labyrinthe avec une entrée, un chemin et une sortie
+
     lab = [["piège" for _ in range(TAILLE_LABYRINTHE)] for _ in range(TAILLE_LABYRINTHE)]
     x, y = 0, 0
     lab[x][y] = "entrée"
     while (x, y) != (TAILLE_LABYRINTHE - 1, TAILLE_LABYRINTHE - 1):
         lab[x][y] = "chemin"
-        direction = random.choice([(0, 1), (1, 0)])  # Droite ou Bas
+        direction = random.choice([(0, 1), (1, 0)])  
         nx, ny = x + direction[0], y + direction[1]
         if 0 <= nx < TAILLE_LABYRINTHE and 0 <= ny < TAILLE_LABYRINTHE:
             x, y = nx, ny
@@ -25,7 +25,7 @@ labyrinthe = generer_labyrinthe()
 commandes = {'O': (-1, 0), 'K': (0, -1), 'L': (0, 1), 'M': (1, 0)}
 
 def afficher_labyrinthe(position):
-    # Affiche le labyrinthe avec la position actuelle du joueur
+
     for i, ligne in enumerate(labyrinthe):
         for j, case in enumerate(ligne):
             if (i, j) == position:
@@ -35,7 +35,7 @@ def afficher_labyrinthe(position):
         print()
 
 def perdre():
-    # Affiche un message de défaite et propose de recommencer
+  
     reponse = messagebox.askretrycancel("Défaite", "Oh non ! Tu es tombé dans un piège ! Recommencer ?")
     if reponse:
         jouer_labyrinthe(False)
@@ -43,7 +43,7 @@ def perdre():
         root.destroy()
 
 def gagner(temps):
-    # Affiche un message de victoire et les records
+ 
     global records, labyrinthe
     records.append(temps)
     records = sorted(records)[:TOP_RECORDS]
@@ -52,7 +52,7 @@ def gagner(temps):
     root.destroy()
 
 def afficher_indice(texte):
-    # Affiche un indice dans une fenêtre secondaire
+ 
     indice_fenetre = tk.Toplevel(root)
     indice_fenetre.title("Indice")
     label = tk.Label(indice_fenetre, text=texte)
@@ -61,7 +61,6 @@ def afficher_indice(texte):
     bouton_ok.pack(pady=5)
 
 def verifier_inactivite(position_initiale):
-    # Affiche des indices si le joueur est inactif pendant trop longtemps
     root.after(120000, lambda: afficher_indice("Indice : Avance au calme, chaque pas compte…") if position_initiale == position else None)
     root.after(240000, lambda: afficher_indice("Indice : Je suis à l'opposé de ZQSD") if position_initiale == position else None)
     root.after(300000, lambda: afficher_indice("Indice : Ceux qui te permettent d'avancer est l'acronyme de Au Calme") if position_initiale == position else None)
@@ -72,19 +71,19 @@ def jouer_labyrinthe(nouveau_jeu=True):
         debut_temps = time.time()
     position = [0, 0]
 
-    # Fonction pour afficher un message initial avant de commencer
+   
     def debut_jeu():
         messagebox.showinfo("Bienvenue", "Bienvenue dans le jeu !\n\nLes commandes pour avancer sont à découvrir par toi-même.\nEssaie d'explorer et de trouver comment te déplacer.")
 
-    debut_jeu()  # Affichage du message de bienvenue et d'avertissement
+    debut_jeu()
 
     def rejouer():
-        # Fonction pour recommencer le jeu à partir de la position initiale
+       
         global position
         position = [0, 0]
         afficher_labyrinthe(tuple(position))
-        jeu_frame.pack_forget()  # Supprimer l'ancienne vue du jeu
-        jeu_frame.pack()  # Afficher le jeu à partir de la position initiale
+        jeu_frame.pack_forget()  
+        jeu_frame.pack()  
 
     jeu_frame = tk.Frame(root)
     jeu_frame.pack()
@@ -107,7 +106,7 @@ def jouer_labyrinthe(nouveau_jeu=True):
         if labyrinthe[nouvelle_position[0]][nouvelle_position[1]] == "piège":
             print("Tu es mort ! Tu dois recommencer.")
             print("Tu retournes à ta position initiale.")
-            rejouer()  # Recommencer le jeu à partir de la position initiale
+            rejouer() 
             break
 
         position[:] = nouvelle_position
@@ -118,5 +117,6 @@ def jouer_labyrinthe(nouveau_jeu=True):
 
 if __name__ == "__main__":
     root = tk.Tk()
-    root.withdraw()  # Masquer la fenêtre principale initialement
+    root.withdraw()  
     jouer_labyrinthe()
+
