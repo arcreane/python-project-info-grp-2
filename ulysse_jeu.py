@@ -117,8 +117,8 @@ def dessiner_bouton_rejouer():
 
 def ecran_accueil():
     fenetre.fill(VIOLET_FONCE)
-    font_titre = pygame.font.Font(None, 40)
-    font_texte = pygame.font.Font(None, 29)
+    font_titre = pygame.font.Font(None, 32)
+    font_texte = pygame.font.Font(None, 25)
 
     titre = font_titre.render("Bienvenue dans le Démineur de la Tour!", True, BLANC)
     fenetre.blit(titre, (LARGEUR // 2 - titre.get_width() // 2, 50))
@@ -187,7 +187,7 @@ while running:
                     jeu = TourDemineur(niveau)
 
     if etat == "jeu":
-        fenetre.fill(BLANC)
+        fenetre.fill(NOIR)
         jeu.afficher()
 
         rect_bouton_rejouer = None
