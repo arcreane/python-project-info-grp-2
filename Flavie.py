@@ -8,7 +8,7 @@ TOP_RECORDS = 10
 records = []
 
 def generer_labyrinthe():
-
+  
     lab = [["piège" for _ in range(TAILLE_LABYRINTHE)] for _ in range(TAILLE_LABYRINTHE)]
     x, y = 0, 0
     lab[x][y] = "entrée"
@@ -35,7 +35,7 @@ def afficher_labyrinthe(position):
         print()
 
 def perdre():
-  
+ 
     reponse = messagebox.askretrycancel("Défaite", "Oh non ! Tu es tombé dans un piège ! Recommencer ?")
     if reponse:
         jouer_labyrinthe(False)
@@ -43,7 +43,7 @@ def perdre():
         root.destroy()
 
 def gagner(temps):
- 
+   
     global records, labyrinthe
     records.append(temps)
     records = sorted(records)[:TOP_RECORDS]
@@ -52,7 +52,7 @@ def gagner(temps):
     root.destroy()
 
 def afficher_indice(texte):
- 
+
     indice_fenetre = tk.Toplevel(root)
     indice_fenetre.title("Indice")
     label = tk.Label(indice_fenetre, text=texte)
@@ -61,24 +61,26 @@ def afficher_indice(texte):
     bouton_ok.pack(pady=5)
 
 def verifier_inactivite(position_initiale):
+   
     root.after(120000, lambda: afficher_indice("Indice : Avance au calme, chaque pas compte…") if position_initiale == position else None)
     root.after(240000, lambda: afficher_indice("Indice : Je suis à l'opposé de ZQSD") if position_initiale == position else None)
     root.after(300000, lambda: afficher_indice("Indice : Ceux qui te permettent d'avancer est l'acronyme de Au Calme") if position_initiale == position else None)
 
 def jouer_labyrinthe(nouveau_jeu=True):
-    global position, debut_temps
+    global position, debut_temps, tentative_count
     if nouveau_jeu:
         debut_temps = time.time()
+        tentative_count = 0  
     position = [0, 0]
 
    
     def debut_jeu():
         messagebox.showinfo("Bienvenue", "Bienvenue dans le jeu !\n\nLes commandes pour avancer sont à découvrir par toi-même.\nEssaie d'explorer et de trouver comment te déplacer.")
 
-    debut_jeu()
+    debut_jeu()  
 
     def rejouer():
-       
+   
         global position
         position = [0, 0]
         afficher_labyrinthe(tuple(position))
@@ -93,9 +95,19 @@ def jouer_labyrinthe(nouveau_jeu=True):
         verifier_inactivite(position[:])
         mouvement = input("Entre un déplacement : ").upper()
 
+        tentative_count += 1  
+
         if mouvement not in commandes:
             print("Mouvement invalide, essaie encore.")
             continue
+
+    
+        if tentative_count == 5:
+            afficher_indice("Indice : Avance au calme, chaque pas compte…")
+        elif tentative_count == 15:
+            afficher_indice("Indice : Je suis à l'opposé de ZQSD")
+        elif tentative_count == 20:
+            afficher_indice("Indice : Ceux qui te permettent d'avancer est l'acronyme de Au Calme")
 
         nouvelle_position = [position[0] + commandes[mouvement][0], position[1] + commandes[mouvement][1]]
 
@@ -106,7 +118,7 @@ def jouer_labyrinthe(nouveau_jeu=True):
         if labyrinthe[nouvelle_position[0]][nouvelle_position[1]] == "piège":
             print("Tu es mort ! Tu dois recommencer.")
             print("Tu retournes à ta position initiale.")
-            rejouer() 
+            rejouer()  
             break
 
         position[:] = nouvelle_position
@@ -119,4 +131,3 @@ if __name__ == "__main__":
     root = tk.Tk()
     root.withdraw()  
     jouer_labyrinthe()
-
