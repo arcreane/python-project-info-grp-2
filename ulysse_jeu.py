@@ -187,7 +187,7 @@ while running:
                     jeu = TourDemineur(niveau)
 
     if etat == "jeu":
-        fenetre.fill(NOIR)
+        fenetre.fill(BLANC)
         jeu.afficher()
 
         rect_bouton_rejouer = None
