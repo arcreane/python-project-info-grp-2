@@ -11,6 +11,7 @@ import sys
 script_dir = os.path.dirname(os.path.abspath(__file__))
 os.chdir(script_dir)
 
+
 # ===========================
 # INTRODUCTION DU JEU
 # ===========================
@@ -19,9 +20,11 @@ def introduction():
     print("\n[INTRODUCTION]")
     print("Tu ouvres les yeux dans un espace confiné. L'air est glacé, chargé d'électricité statique.")
     print("Devant toi, un miroir fêlé, des parois métalliques... et un écran rouge affichant \"ÉTAGE ???\".")
-    print("Une voix métallique résonne: \"Bienvenue dans l'Ascenseur Infernal. Pour sortir, vous devrez résoudre une série d'énigmes.\"")
+    print(
+        "Une voix métallique résonne: \"Bienvenue dans l'Ascenseur Infernal. Pour sortir, vous devrez résoudre une série d'énigmes.\"")
     print("\"Chaque réussite vous rapprochera de la liberté. Chaque échec... eh bien, vous verrez.\"")
     input("Appuie sur Entrée pour commencer ta première épreuve...")
+
 
 # ===========================
 # JEU 1 : SERRURE MUSICALE
@@ -29,6 +32,7 @@ def introduction():
 
 notes = {1: "GRAVE", 2: "MOYEN", 3: "AIGU", 4: "TRÈS AIGU"}
 frequences = {1: 262, 2: 440, 3: 660, 4: 880}
+
 
 def jouer_note(bouton):
     try:
@@ -39,12 +43,14 @@ def jouer_note(bouton):
         print(f"BIP ({notes[bouton]})")
         time.sleep(0.8)
 
+
 def jouer_sequence(sequence):
     print("\nLa mélodie :")
     for bouton in sequence:
         jouer_note(bouton)
         time.sleep(0.5)  # petite pause entre les notes
     print("\n")
+
 
 def ecouter_notes():
     print("\nTu peux écouter les sons un par un.")
@@ -63,11 +69,12 @@ def ecouter_notes():
         except ValueError:
             print("Choix invalide. Tape un numéro entre 1 et 4 ou 'q'.")
 
+
 def serrure_musicale():
     print("\n[JEU 1 : LA SERRURE MUSICALE]")
     print("L'écran de l'ascenseur scintille. Un panneau s'ouvre, révélant quatre boutons colorés.")
     print("\"Pour avancer, vous devez reproduire la mélodie secrète. Écoutez attentivement...\"")
-    
+
     print("Bienvenue dans la serrure musicale!")
     print("Écoute attentivement, chaque note est une clé différente...")
     print("\nAttention : tu as droit à 3 erreurs maximum par mélodie. Après 3 erreurs, la bonne réponse sera donnée!")
@@ -76,7 +83,8 @@ def serrure_musicale():
         print(f"Bouton {bouton} = {note}")
 
     while True:
-        choix = input("\nVeux-tu écouter les notes ou commencer le jeu ? (e = écouter / c = commencer) : ").strip().lower()
+        choix = input(
+            "\nVeux-tu écouter les notes ou commencer le jeu ? (e = écouter / c = commencer) : ").strip().lower()
         if choix == "e":
             ecouter_notes()
         elif choix == "c":
@@ -120,10 +128,12 @@ def serrure_musicale():
             print("Ce n'est pas la bonne mélodie...")
             if erreurs_consecutives >= 3:
                 print("La bonne réponse était :", ' '.join(str(num) for num in sequence_sons))
-                print("Malgré tes erreurs, la serrure clique et s'ouvre. La voix résonne: \"Premier défi complété... par chance.\"")
+                print(
+                    "Malgré tes erreurs, la serrure clique et s'ouvre. La voix résonne: \"Premier défi complété... par chance.\"")
 
     print("\nLa serrure musicale est déverrouillée. Une nouvelle épreuve t'attend...")
     input("Appuie sur Entrée pour continuer...")
+
 
 # ===========================
 # JEU 2 : MESSAGE CODÉ
@@ -150,9 +160,11 @@ indices = {
     'τ': '4*4', 'υ': '34/2', 'φ': '100/4', 'χ': '3*7', 'ψ': '11*2', 'ω': '69/3'
 }
 
+
 def convertir_en_grec(message):
     """Fonction pour convertir un message en lettres grecques."""
     return ''.join([greek_alphabet.get(char, char) for char in message.lower()])
+
 
 def afficher_indice(message_grec):
     """Afficher un indice basé sur les lettres grecques du message."""
@@ -162,12 +174,13 @@ def afficher_indice(message_grec):
             indices_message.append(f"{char} = {indices[char]}")
     return "\n".join(indices_message)
 
+
 def message_code():
     """Fonction principale du jeu."""
     print("\n[JEU 2 : LE MESSAGE CODÉ]")
     print("L'écran de l'ascenseur scintille à nouveau. Des symboles étranges y apparaissent.")
     print("\"De mystérieux caractères grecs dissimulent un message. Déchiffrez-le pour continuer votre ascension...\"")
-    
+
     message_original = random.choice(messages)  # Choisir un message aléatoire
     message_grec = convertir_en_grec(message_original)  # Convertir le message en grec
 
@@ -198,6 +211,7 @@ def message_code():
     print("\nL'énigme du message codé est résolue! L'ascenseur tremble légèrement...")
     input("Appuie sur Entrée pour continuer vers la prochaine épreuve...")
 
+
 # ===========================
 # JEU 3 : LABYRINTHE PIÉGÉ
 # ===========================
@@ -205,18 +219,20 @@ def message_code():
 TAILLE_LABYRINTHE = 6
 commandes = {'O': (-1, 0), 'K': (0, -1), 'L': (0, 1), 'M': (1, 0)}  # OKLM - Au calme
 
+
 def generer_labyrinthe():
     lab = [["piège" for _ in range(TAILLE_LABYRINTHE)] for _ in range(TAILLE_LABYRINTHE)]
     x, y = 0, 0
     lab[x][y] = "entrée"
     while (x, y) != (TAILLE_LABYRINTHE - 1, TAILLE_LABYRINTHE - 1):
         lab[x][y] = "chemin"
-        direction = random.choice([(0, 1), (1, 0)])  
+        direction = random.choice([(0, 1), (1, 0)])
         nx, ny = x + direction[0], y + direction[1]
         if 0 <= nx < TAILLE_LABYRINTHE and 0 <= ny < TAILLE_LABYRINTHE:
             x, y = nx, ny
     lab[x][y] = "sortie"
     return lab
+
 
 def afficher_labyrinthe(lab, position):
     for i, ligne in enumerate(lab):
@@ -227,58 +243,60 @@ def afficher_labyrinthe(lab, position):
                 print("[ ]" if case != "piège" else "[ ]", end=" ")
         print()
 
+
 def labyrinthe_piege():
     print("\n[JEU 3 : LE LABYRINTHE PIÉGÉ]")
     print("Un pan de mur coulisse. Un écran tactile apparaît, affichant une grille mystérieuse.")
     print("\"Ce labyrinthe renferme de nombreux pièges. Trouvez les commandes cachées et rejoignez la sortie...\"")
     print("\"Attention: chaque pas compte. Au calme...\"")
-    
+
     labyrinthe = generer_labyrinthe()
     position = [0, 0]
     tentative_count = 0
-    
+
     print("\nBienvenue dans le labyrinthe piégé!")
     print("Tu dois trouver ton chemin jusqu'à la sortie.")
     print("Les commandes pour se déplacer sont à découvrir...")
-    
+
     while True:
         print("\nVoici l'état actuel du labyrinthe:")
         afficher_labyrinthe(labyrinthe, tuple(position))
-        
+
         mouvement = input("Entre un déplacement : ").upper()
         tentative_count += 1
-        
+
         if mouvement not in commandes:
             print("Mouvement invalide, essaie encore.")
             if tentative_count == 5:
                 print("Indice : Avance au calme, chaque pas compte…")
             continue
-        
+
         nouvelle_position = [position[0] + commandes[mouvement][0], position[1] + commandes[mouvement][1]]
-        
+
         if not (0 <= nouvelle_position[0] < len(labyrinthe) and 0 <= nouvelle_position[1] < len(labyrinthe[0])):
             print("Impossible de sortir du labyrinthe.")
             continue
-        
+
         if labyrinthe[nouvelle_position[0]][nouvelle_position[1]] == "piège":
             print("Tu es tombé dans un piège ! Tu dois recommencer.")
             position = [0, 0]
             continue
-        
+
         position = nouvelle_position
-        
+
         if labyrinthe[position[0]][position[1]] == "sortie":
             print("Félicitations ! Tu as trouvé la sortie du labyrinthe !")
             print("Une lumière verte s'allume sur le panneau de l'ascenseur.")
             break
-        
+
         if tentative_count == 15:
             print("Indice : Je suis à l'opposé de ZQSD")
         elif tentative_count == 20:
             print("Indice : Les touches qui te permettent d'avancer forment l'acronyme de 'Au Calme'")
-    
+
     print("\nLe labyrinthe est résolu! L'ascenseur semble réagir...")
     input("Appuie sur Entrée pour continuer vers la dernière épreuve...")
+
 
 # ===========================
 # JEU 4 : DÉMINEUR
@@ -287,10 +305,11 @@ def labyrinthe_piege():
 def jouer_demineur():
     print("\n[JEU 4 : LE DÉMINEUR]")
     print("L'écran principal de l'ascenseur s'illumine. Une grille apparaît avec des cases numérotées.")
-    print("\"Pour votre dernier défi, désamorcez les explosifs cachés. Les chiffres indiquent le nombre de bombes adjacentes.\"")
+    print(
+        "\"Pour votre dernier défi, désamorcez les explosifs cachés. Les chiffres indiquent le nombre de bombes adjacentes.\"")
     print("Appuie sur Entrée pour lancer l'interface du démineur...")
     input()
-    
+
     pygame.init()
 
     TAILLE_CASE = 60
@@ -308,14 +327,15 @@ def jouer_demineur():
     fenetre = pygame.display.set_mode((LARGEUR, HAUTEUR + 80))
     pygame.display.set_caption("Démineur de la Tour")
 
-    # Essayer de charger les images, sinon créer des substituts
+    # Gestion des images avec fallback si elles ne sont pas trouvées
     try:
         dalle_image = pygame.image.load("images/dalles.jpg")
         dalle_image = pygame.transform.scale(dalle_image, (TAILLE_CASE, TAILLE_CASE))
     except:
         dalle_image = pygame.Surface((TAILLE_CASE, TAILLE_CASE))
         dalle_image.fill(GRIS_CLAIR)
-        
+        pygame.draw.rect(dalle_image, (150, 150, 150), (0, 0, TAILLE_CASE, TAILLE_CASE), 3)
+
     try:
         tnt_image = pygame.image.load("images/tnt.jpg")
         tnt_image = pygame.transform.scale(tnt_image, (TAILLE_CASE, TAILLE_CASE))
@@ -325,7 +345,7 @@ def jouer_demineur():
         font = pygame.font.Font(None, 36)
         texte = font.render("TNT", True, NOIR)
         tnt_image.blit(texte, (10, 20))
-        
+
     try:
         tntsweeper_image = pygame.image.load("images/tntsweeper.png")
         tntsweeper_image = pygame.transform.scale(tntsweeper_image, (LARGEUR, HAUTEUR + 80))
@@ -334,7 +354,7 @@ def jouer_demineur():
         tntsweeper_image.fill(VIOLET_FONCE)
         font = pygame.font.Font(None, 48)
         texte = font.render("TNT SWEEPER", True, BLANC)
-        tntsweeper_image.blit(texte, (LARGEUR//2 - 150, HAUTEUR//2))
+        tntsweeper_image.blit(texte, (LARGEUR // 2 - 150, HAUTEUR // 2))
 
     def generer_mines(taille):
         mines = []
@@ -348,7 +368,7 @@ def jouer_demineur():
 
     def placer_indices(grille, mines, taille):
         directions = [(-1, -1), (-1, 0), (-1, 1),
-                      (0, -1),         (0, 1),
+                      (0, -1), (0, 1),
                       (1, -1), (1, 0), (1, 1)]
         for y in range(taille):
             for x in range(taille):
@@ -382,17 +402,17 @@ def jouer_demineur():
                 return
             self.revelees[y][x] = True
             self.case_revelees += 1
-            
+
             if self.grille[y][x] == "X":
                 self.game_over = True
             elif self.grille[y][x] == ".":
                 for dx, dy in [(-1, -1), (-1, 0), (-1, 1),
-                               (0, -1),         (0, 1),
+                               (0, -1), (0, 1),
                                (1, -1), (1, 0), (1, 1)]:
                     nx, ny = x + dx, y + dy
                     if 0 <= nx < self.taille and 0 <= ny < self.taille:
                         self.reveler_case(nx, ny)
-                        
+
             # Vérifier la victoire
             if self.case_revelees >= self.case_non_mines:
                 self.victoire = True
@@ -430,6 +450,34 @@ def jouer_demineur():
         fenetre.blit(texte, (LARGEUR // 2 - 40, HAUTEUR + 30))
         return bouton
 
+    def ecran_accueil():
+        fenetre.fill(VIOLET_FONCE)
+        font_titre = pygame.font.Font(None, 32)
+        font_texte = pygame.font.Font(None, 25)
+
+        titre = font_titre.render("Bienvenue dans le Démineur de la Tour!", True, BLANC)
+        fenetre.blit(titre, (LARGEUR // 2 - titre.get_width() // 2, 50))
+
+        instructions = [
+            "But du jeu : révéler toutes les cases sans mines.",
+            "Clique gauche pour révéler une case.",
+            "Clique droit pour poser un drapeau.",
+            "Si vous cliquez sur une mine, c'est perdu !"
+        ]
+
+        for i, ligne in enumerate(instructions):
+            texte = font_texte.render(ligne, True, BLANC)
+            fenetre.blit(texte, (50, 150 + i * 40))
+
+        bouton = pygame.Rect(LARGEUR // 2 - 100, HAUTEUR - 100, 200, 50)
+        pygame.draw.rect(fenetre, VERT, bouton)
+        pygame.draw.rect(fenetre, NOIR, bouton, 3)
+        texte_bouton = font_texte.render("Commencer", True, NOIR)
+        fenetre.blit(texte_bouton, (LARGEUR // 2 - texte_bouton.get_width() // 2, HAUTEUR - 90))
+
+        pygame.display.flip()
+        return bouton
+
     def afficher_intro():
         fenetre.blit(tntsweeper_image, (0, 0))
         pygame.display.flip()
@@ -441,17 +489,25 @@ def jouer_demineur():
     running = True
     etat = "intro"  # "intro", "accueil", "jeu"
     resultat = False
-    
+
     while running:
         if etat == "intro":
             afficher_intro()
-            etat = "jeu"
-            jeu = TourDemineur(niveau)
-    
+            etat = "accueil"
+
+        if etat == "accueil":
+            bouton_commencer = ecran_accueil()
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-    
+
+            if etat == "accueil":
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if bouton_commencer.collidepoint(event.pos):
+                        jeu = TourDemineur(niveau)
+                        etat = "jeu"
+
             elif etat == "jeu":
                 if not jeu.game_over and not jeu.victoire and event.type == pygame.MOUSEBUTTONDOWN:
                     x = event.pos[0] // TAILLE_CASE
@@ -468,11 +524,11 @@ def jouer_demineur():
                             running = False
                         else:
                             jeu = TourDemineur(niveau)
-    
+
         if etat == "jeu":
             fenetre.fill(NOIR)
             jeu.afficher()
-    
+
             rect_bouton_rejouer = None
             if jeu.game_over:
                 font = pygame.font.Font(None, 48)
@@ -484,12 +540,13 @@ def jouer_demineur():
                 texte = font.render("Victoire !", True, VERT)
                 fenetre.blit(texte, (LARGEUR // 2 - 80, HAUTEUR // 2 - 30))
                 rect_bouton_rejouer = dessiner_bouton_rejouer()
-    
+
         pygame.display.flip()
         clock.tick(30)
-    
+
     pygame.quit()
     return resultat or jeu.victoire
+
 
 # ===========================
 # CONCLUSION
@@ -507,8 +564,9 @@ def conclusion(toutes_reussites):
         print("\"Vous avez survécu. C'est... acceptable.\"")
         print("Tu franchis les portes avec prudence, soulagé·e d'avoir survécu à cette épreuve étrange.")
         print("Mais au fond de toi, tu te demandes si cela est vraiment terminé...")
-    
+
     print("\nFIN")
+
 
 # ===========================
 # PROGRAMME PRINCIPAL
@@ -524,35 +582,36 @@ def attendre_entree():
     fenetre.geometry("500x300")
     fenetre.configure(bg="black")
 
-    label = tk.Label(fenetre, text="Bienvenue dans\nL'ASCENSEUR INFERNAL", 
-                    font=("Arial", 20), bg="black", fg="red", pady=30)
+    label = tk.Label(fenetre, text="Bienvenue dans\nL'ASCENSEUR INFERNAL",
+                     font=("Arial", 20), bg="black", fg="red", pady=30)
     label.pack()
 
-    sous_titre = tk.Label(fenetre, text="Un escape game numérique", 
-                        font=("Arial", 12), bg="black", fg="white")
+    sous_titre = tk.Label(fenetre, text="Un escape game numérique",
+                          font=("Arial", 12), bg="black", fg="white")
     sous_titre.pack()
 
-    bouton = tk.Button(fenetre, text="ENTRER", command=lancer_jeu, 
-                      font=("Arial", 14), bg="red", fg="white", 
-                      padx=20, pady=10, relief=tk.RAISED, bd=5)
+    bouton = tk.Button(fenetre, text="ENTRER", command=lancer_jeu,
+                       font=("Arial", 14), bg="red", fg="white",
+                       padx=20, pady=10, relief=tk.RAISED, bd=5)
     bouton.pack(pady=40)
 
     fenetre.mainloop()
 
+
 def jeu_principal():
     # Variables pour suivre les réussites
     reussites = []
-    
+
     # Introduction
     introduction()
-    
+
     # Jeu 1: Serrure musicale
     print("\n==========================================================")
     print("TRANSITION: L'ascenseur tremble. Un premier défi apparaît.")
     print("==========================================================\n")
     serrure_musicale()
     reussites.append(True)  # Toujours considéré comme réussi pour progresser
-    
+
     # Jeu 2: Message codé
     print("\n==========================================================")
     print("TRANSITION: L'ascenseur descend brusquement d'un étage.")
@@ -560,7 +619,7 @@ def jeu_principal():
     print("==========================================================\n")
     message_code()
     reussites.append(True)  # Toujours considéré comme réussi
-    
+
     # Jeu 3: Labyrinthe piégé
     print("\n==========================================================")
     print("TRANSITION: L'ascenseur grince et bascule. Un mur coulisse.")
@@ -568,20 +627,21 @@ def jeu_principal():
     print("==========================================================\n")
     labyrinthe_piege()
     reussites.append(True)  # Toujours considéré comme réussi
-    
-    # Jeu 4: Démineur avec interface graphique 
+
+    # Jeu 4: Démineur avec interface graphique
     print("\n==========================================================")
     print("TRANSITION: L'ascenseur s'arrête net. L'écran clignote en rouge.")
     print("\"ÉTAGE FINAL - DÉSAMORÇAGE REQUIS\"")
     print("==========================================================\n")
     reussite_demineur = jouer_demineur()
     reussites.append(reussite_demineur)
-    
+
     # Conclusion
     print("\n==========================================================")
     print("TRANSITION: L'ascenseur s'active une dernière fois...")
     print("==========================================================\n")
     conclusion(all(reussites))
+
 
 if __name__ == "__main__":
     try:
